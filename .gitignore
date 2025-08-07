@@ -1,2 +1,9 @@
-*.ipynb_checkpoints
-*.pyc
+.ipynb_checkpoints
+merged_symmetric_csvs/
+examples/
+downloaded_restAP_files/
+network_collapsed_csvs/
+parcellated_csvs/
+parcellated_regionwise_csvs
+tmp/
+visualise_data.ipynb
