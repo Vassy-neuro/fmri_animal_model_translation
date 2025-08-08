@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import KFold, GridSearchCV, train_test_split
+from sklearn.model_selection import StratifiedKFold, GridSearchCV, train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.compose import ColumnTransformer
 from sklearn.metrics import roc_auc_score, confusion_matrix, roc_curve
@@ -66,7 +66,7 @@ def prepare_group_lasso_data(df, group_labels_dict, target_col='depression'):
 
 # --- NEW: Core Hold-Out Evaluation Function ---
 
-def run_holdout_evaluation(X, y, groups, param_grid, test_size=0.25, random_state=42):
+def run_holdout_evaluation(X, y, groups, param_grid, test_size=0.25, random_state=42, cv=5):
     """
     Splits data into a train and test set, tunes hyperparameters on the train set
     using cross-validation, and evaluates the final model on the hold-out test set.
@@ -91,7 +91,7 @@ def run_holdout_evaluation(X, y, groups, param_grid, test_size=0.25, random_stat
     print("   - Scaler fitted on training data and applied to both sets.")
 
     # 3. Tune hyperparameters using cross-validation on the training set
-    inner_cv = KFold(n_splits=5, shuffle=True, random_state=random_state)
+    inner_cv = StratifiedKFold(n_splits=cv, shuffle=True, random_state=random_state)
     lgl = LogisticGroupLasso(groups=groups, supress_warning=True, n_iter=2000)
 
     print("   - Tuning hyperparameters with GridSearchCV on the training data...")
